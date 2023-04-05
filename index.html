@@ -28,7 +28,7 @@
                      </div>
                   </div>
                   <div class="form-group">
-                     <input type="text" class="form-control" id="inputAddress2" placeholder="地址">
+                     <input type="text" class="form-control" id="address" placeholder="地址">
                   </div>
                </form>
             </div>
@@ -39,14 +39,19 @@
          <button onclick="emptyForm()" type="button" class="btn-lg btn-dark">清空</button>
       </div>
       <div class="container mb-3">
-         <div class = "form-control chat-messages" contenteditable="false" style="text-align: left; height: 200px; " readonly="readonly">
+         <div class = "form-control chat-messages" contenteditable="false" style="text-align: left; height: 300px; overflow-y: scroll;" readonly="readonly">
             <div id="output"></div>
          </div>
       </div>
       <!-- script -->
+      <script type="text/javascript" src="list.json"></script>
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
       <script src="https://cdn.jsdelivr.net/npm/jquery-twzipcode@1.7.14/jquery.twzipcode.min.js"></script>
       <script>
+         var list;
+         $.get('list.json', function(dataList) {
+            list = dataList;
+         });
          $("#twzipcode").twzipcode({
                          });
          function emptyForm()
@@ -54,7 +59,30 @@
          	$('#form')[0].reset();
            document.getElementById("output").innerHTML = ``;
          }
-         function query(){document.getElementById("output").innerHTML = "柯文哲負責";}
+         function query(){
+            var county = $("#twzipcode").twzipcode('get', 'county');
+            var district = $("#twzipcode").twzipcode('get', 'district');
+            var address = $("#address").val();
+            var content = "";
+            for (var i = 0; i < list.length; i++) {
+               if (address == "")
+               {
+                  if (county == list[i].county && district == list[i].town)
+                  {
+                     content = content + list[i].village + "  " + list[i].name + "  " + list[i].phone + "<br>"
+                  }
+               }
+               else
+               {
+                  if (address.includes(list[i].village))
+                  {
+                     content = content + list[i].village + "  " + list[i].name + "  " + list[i].phone;
+                     break;
+                  }
+               }
+            }
+            document.getElementById("output").innerHTML = content;
+         }
       </script>
    </body>
 </html>
