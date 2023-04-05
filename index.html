@@ -1,45 +1,60 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+   <head>
+      <title>sidewalkguardian</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+      <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
+   </head>
    <body>
-      <head>
-        <title>sidewalkguardian</title>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-        <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css">
-      </head>
-      <div class="container">
-      <div class="row">
-      <div class="col-12">
-      <form action="">
-      <div class="card border-success w-100">
-         <div class="card-header bg-success">
-            <h3 class="text-white">里長查詢</h3>
-         </div>
-         <div class="card-body bg-transparents">
-            <div id="twzipcode" class="form-row">
-               <div class="form-group col">
-                  <div data-role="county" data-style="form-control" data-name="county" data-value=""></div>
-               </div>
-               <div class="form-group col">
-                  <div data-role="district" data-style="form-control" data-name="district" data-value=""></div>
-               </div>
-               <div class="form-group col">
-                  <div data-role="zipcode" data-style="form-control" data-name="zipcode" data-value=""></div>
-               </div>
+      <!-- Start Content -->
+      <div class="container py-3 text-center">
+         <div class="card w-100">
+            <div class="card-header bg-dark">
+               <h3 class="text-white">里長查詢</h3>
             </div>
-            <div class="form-group">
-               <input type="text" class="form-control" id="inputAddress2" placeholder="地址">
+            <div class="card-body bg-transparents">
+               <form id="form">
+                  <div id="twzipcode" class="form-row">
+                     <div class="form-group col">
+                        <div data-role="county" data-style="form-control" data-name="county" data-value=""></div>
+                     </div>
+                     <div class="form-group col">
+                        <div data-role="district" data-style="form-control" data-name="district" data-value=""></div>
+                     </div>
+                     <div class="form-group col">
+                        <div data-role="zipcode" data-style="form-control" data-name="zipcode" data-value=""></div>
+                     </div>
+                  </div>
+                  <div class="form-group">
+                     <input type="text" class="form-control" id="inputAddress2" placeholder="地址">
+                  </div>
+               </form>
             </div>
-            <button type="submit" class="btn btn-primary btn-lg btn-block mt-3">送出</button>
-            <button type="button" class="btn btn-warning btn-lg btn-block mt-3">清除</button>
          </div>
       </div>
+      <div class="container py-1 text-center">
+         <button onclick="query()" type="button" class="btn-lg btn-dark">查詢</button>
+         <button onclick="emptyForm()" type="button" class="btn-lg btn-dark">清空</button>
+      </div>
+      <div class="container mb-3">
+         <div class = "form-control chat-messages" contenteditable="false" style="text-align: left; height: 200px; " readonly="readonly">
+            <div id="output"></div>
+         </div>
+      </div>
+      <!-- script -->
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
+      <script src="https://cdn.jsdelivr.net/npm/jquery-twzipcode@1.7.14/jquery.twzipcode.min.js"></script>
+      <script>
+         $("#twzipcode").twzipcode({
+                         });
+         function emptyForm()
+         {
+         	$('#form')[0].reset();
+           document.getElementById("output").innerHTML = ``;
+         }
+         function query(){document.getElementById("output").innerHTML = "柯文哲負責";}
+      </script>
    </body>
-   <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.0.0/jquery.min.js"></script>
-   <script src="https://cdn.jsdelivr.net/npm/jquery-twzipcode@1.7.14/jquery.twzipcode.min.js"></script>
-   <script>
-      $("#twzipcode").twzipcode({
-                      });
-   </script>
 </html>
