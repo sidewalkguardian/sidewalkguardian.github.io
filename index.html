@@ -65,12 +65,14 @@
             var county = $("#twzipcode").twzipcode('get', 'county');
             var district = $("#twzipcode").twzipcode('get', 'district');
             var address = $("#address").val();
+            address = address.replace(/\d+號/, "");
             var content = "";
 
             //call Nominatim API
             var fullAddress = county+district+address;
             var addressDetails = "";
-            var town = "";
+            var cityReturn  = "";
+            var suburbReturn   = "";
             var neighbourhood = "";
             const url = `https://nominatim.openstreetmap.org/search?q=${fullAddress}&format=json&addressdetails=1&limit=1`;
 
@@ -93,20 +95,21 @@
                   .then(response => response.json())
                   .then(data => {
                      addressDetails = data[0].address;
-                     town = addressDetails.town || addressDetails.village || addressDetails.hamlet;
+                     cityReturn = addressDetails.city;
+                     suburbReturn = addressDetails.suburb;
                      neighbourhood = addressDetails.neighbourhood || '';
                      resolve(neighbourhood);
                   })
                   .catch(error => {
-                     console.error(error);
                      resolve('');
                   });
                });
 
                neighbourhoodPromise.then(neighbourhood => {
+                  
                   for (var i = 0; i < list.length; i++)
                   {
-                     if (neighbourhood == list[i].village)
+                     if (cityReturn == list[i].county && suburbReturn == list[i].town && neighbourhood == list[i].village)
                      {
                         content = content + list[i].village + "  " + list[i].name + "  " + list[i].phone;
                         document.getElementById("output").innerHTML = content;
