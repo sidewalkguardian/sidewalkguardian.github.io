@@ -107,6 +107,12 @@
 
                neighbourhoodPromise.then(neighbourhood => {
                   
+                  if (neighbourhood == "")
+                  {
+                     document.getElementById("output").innerHTML = fullAddress + " 查無資料<br>請刪除地址最末端非必要樓/號/巷再嘗試";
+                     return;
+                  }
+
                   for (var i = 0; i < list.length; i++)
                   {
                      if (cityReturn == list[i].county && suburbReturn == list[i].town && neighbourhood == list[i].village)
