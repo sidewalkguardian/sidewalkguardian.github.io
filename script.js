@@ -99,7 +99,6 @@ function query(){
     
     addressResult.then(fullAddress => {
         processXMLtoContent(city, suburb, neighbourhood, content)
-        initial();
         return;
     });
     
