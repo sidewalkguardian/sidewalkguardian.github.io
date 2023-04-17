@@ -131,7 +131,7 @@ function processXMLtoContent(city, suburb, neighbourhood, content)
     {
         if (city == list[i].county && suburb == list[i].town && neighbourhood == list[i].village)
         {
-            content = content + list[i].village + "  " + list[i].name + "  " + list[i].phone;
+            content = content + city + suburb + neighbourhood + "<br>" + list[i].name + "<br>" + list[i].phone + "<br>" + list[i].address;
             document.getElementById("output").innerHTML = content;
             initial();
             return;
