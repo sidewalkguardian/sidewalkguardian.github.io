@@ -48,8 +48,20 @@ mymap.on('click', function(e) {
 // clear
 function emptyForm()
 {
+    initial();
     $('#form')[0].reset();
     document.getElementById("output").innerHTML = ``;
+}
+
+function initial()
+{
+    lat= "";
+    lng= "";
+    city= "";
+    suburb= "";
+    neighbourhood = "";
+    road= "";
+    fullAddress= "";
 }
 
 // query
@@ -63,12 +75,19 @@ function query(){
     if (fullAddress != "")
     {
         processXMLtoContent(city, suburb, neighbourhood, content)
+        return;
     }
 
     let addressResult = new Promise(resolve => {
         fetch(`https://nominatim.openstreetmap.org/search?q=${address}&format=json&addressdetails=1&limit=1`)
         .then(res => res.json())
         .then(data => {
+            if (data.length == 0)
+            {
+                document.getElementById("output").innerHTML = address + " 查無資料";
+                initial();
+                return;
+            }
             city = data[0].address.city;
             suburb = data[0].address.suburb;
             neighbourhood = data[0].address.neighbourhood;
@@ -80,6 +99,7 @@ function query(){
     
     addressResult.then(fullAddress => {
         processXMLtoContent(city, suburb, neighbourhood, content)
+        initial();
         return;
     });
     
@@ -114,6 +134,7 @@ function processXMLtoContent(city, suburb, neighbourhood, content)
         {
             content = content + list[i].village + "  " + list[i].name + "  " + list[i].phone;
             document.getElementById("output").innerHTML = content;
+            initial();
             return;
         }
     }
@@ -121,5 +142,6 @@ function processXMLtoContent(city, suburb, neighbourhood, content)
     if (content == "")
     {
         document.getElementById("output").innerHTML = fullAddress + " 查無資料";
+        initial();
     }
 }
