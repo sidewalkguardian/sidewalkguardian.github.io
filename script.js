@@ -69,7 +69,6 @@ function query(){
     document.getElementById("output").innerHTML = `<div class="spinner-border" role="status"></div>`;
     //var county = $("#twzipcode").twzipcode('get', 'county');
     //var district = $("#twzipcode").twzipcode('get', 'district');
-    var address = $("#address").val();
     var content = "";
 
     if (fullAddress != "")
@@ -77,30 +76,34 @@ function query(){
         processXMLtoContent(city, suburb, neighbourhood, content)
         return;
     }
-
-    let addressResult = new Promise(resolve => {
-        fetch(`https://nominatim.openstreetmap.org/search?q=${address}&format=json&addressdetails=1&limit=1`)
-        .then(res => res.json())
-        .then(data => {
-            if (data.length == 0)
-            {
-                document.getElementById("output").innerHTML = address + " 查無資料";
-                initial();
-                return;
-            }
-            city = data[0].address.city;
-            suburb = data[0].address.suburb;
-            neighbourhood = data[0].address.neighbourhood;
-            road = data[0].address.road;
-            fullAddress = city+suburb+neighbourhood+road;
-            resolve(fullAddress);
-        })
-    });
-    
-    addressResult.then(fullAddress => {
-        processXMLtoContent(city, suburb, neighbourhood, content)
-        return;
-    });
+    else
+    {
+        var address = $("#address").val();
+        address = address.replace(/\d+號/, "");
+        let addressResult = new Promise(resolve => {
+            fetch(`https://nominatim.openstreetmap.org/search?q=${address}&format=json&addressdetails=1&limit=1`)
+            .then(res => res.json())
+            .then(data => {
+                if (data.length == 0)
+                {
+                    document.getElementById("output").innerHTML = address + " 查無資料";
+                    initial();
+                    return;
+                }
+                city = data[0].address.city;
+                suburb = data[0].address.suburb;
+                neighbourhood = data[0].address.neighbourhood;
+                road = data[0].address.road;
+                fullAddress = city+suburb+neighbourhood+road;
+                resolve(fullAddress);
+            })
+        });
+        
+        addressResult.then(fullAddress => {
+            processXMLtoContent(city, suburb, neighbourhood, content)
+            return;
+        });
+    }
     
 }
 
