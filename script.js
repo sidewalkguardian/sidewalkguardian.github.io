@@ -32,8 +32,8 @@ mymap.on('click', function(e) {
         .then(res => res.json())
         .then(data => {
             city = data.address.city;
-            suburb = data.address.suburb;
-            neighbourhood = data.address.neighbourhood;
+            suburb = data.address.suburb || data.address.town;
+            neighbourhood = data.address.neighbourhood || data.address.village;
             road = data.address.road;
             fullAddress = city+suburb+neighbourhood+road;
             resolve(fullAddress);
